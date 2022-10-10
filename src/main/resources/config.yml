@@ -1,0 +1,79 @@
+#金币惩罚
+money:
+  #是否开启
+  enabled: false
+  #权限组名 : 百分比
+  perm:
+    default: 3
+    vip: 2
+  #剩多少钱不扣了
+  didnt: 100.0
+  #当死亡数超过或等于这个值就会对这个玩家启用惩罚(前提是惩罚主开关也要开启,还有玩家所在的权限组也要配置)
+  didntDeath: 1
+  message: "&7本次死亡扣除&c%percentage%%&7游戏币,金额&c%num%"
+  #惩罚生效的世界
+  worlds:
+    - ""
+  #死亡后执行的指令
+  #asPlayer 代表用玩家身份执行指令
+  #asOp 代表用OP身份执行指令
+  #asConsole 代表用后台身份执行指令
+  commands:
+    - "asConsole:broadcast %player%死了"
+  #死亡后播放的声音
+  #格式："声音名:音量:音高"
+  #全部声音名请看：https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+  sounds:
+    - "ENTITY_WITHER_SPAWN:1:2"
+#物品掉落惩罚
+item:
+  enabled: false
+  #权限组名 : 最大随机物品掉落数
+  perm:
+    default: 3
+    vip: 2
+  message: "&7本次死亡掉落&c%num%&7格物品"
+  didntDeath: 1
+  worlds:
+    - ""
+  commands:
+    - ""
+  sounds:
+    - ""
+#经验惩罚
+exp:
+  enabled: false
+  #权限组名 : 百分比
+  perm:
+    default: 3
+    vip: 2
+  #使用经验值，不使用则用经验等级
+  usepoints: false
+  #剩几级或者几点经验值不扣了
+  didnt: 5
+  didntDeath: 1
+  message: "&7本次死亡扣除&c%exp%经验等级"
+  message2: "&7本次死亡扣除&c%exp%经验值"
+  worlds:
+    - ""
+  commands:
+    - ""
+  sounds:
+    - ""
+#点券惩罚
+points:
+  enabled: false
+  #权限组名 : 百分比
+  perm:
+    default: 3
+    vip: 2
+  didnt: 100.0
+  didntDeath: 1
+  message: "&7本次死亡扣除&c%percentage%%&7点券,金额&c%num%"
+  worlds:
+    - ""
+  commands:
+    - ""
+  sounds:
+    - ""
+

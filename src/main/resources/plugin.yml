@@ -1,0 +1,21 @@
+name: PlayerDeathPenalty
+version: '${project.version}'
+main: me.mmmjjkx.playerdeathpenalty.PlayerDeathPenalty
+api-version: 1.16
+authors: [ mmmjjkx ]
+depend: [ Vault ]
+softdepend: [ LuckPerms,GroupManager,Essentials,CMI ]
+commands:
+  playerdeathpenalty:
+    description: "死亡惩罚重载"
+    permission: playerdeathpenalty.admin
+    permission-message: "你没有权限这样做！"
+permissions:
+  playerdeathpenalty.admin:
+    description: "死亡惩罚重载权限"
+    default: op
+    children:
+      deathpenalty.bypass: true
+  playerdeathpenalty.bypass:
+    description: "死亡惩罚免除惩罚权限"
+    default: op
