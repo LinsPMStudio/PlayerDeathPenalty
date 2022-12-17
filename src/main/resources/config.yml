@@ -1,14 +1,15 @@
+#收集数据
+bstats: true
 #金币惩罚
 money:
   #是否开启
   enabled: false
   #权限组名 : 百分比
   perm:
-    default: 3
-    vip: 2
+    pdp.default: 1
   #剩多少钱不扣了
   didnt: 100.0
-  #当死亡数超过或等于这个值就会对这个玩家启用惩罚(前提是惩罚主开关也要开启,还有玩家所在的权限组也要配置)
+  #当死亡数超过或等于这个值就会对这个玩家启用惩罚(前提是惩罚主开关也要开启,还要配置权限)
   didntDeath: 1
   message: "&7本次死亡扣除&c%percentage%%&7游戏币,金额&c%num%"
   #惩罚生效的世界
@@ -30,8 +31,7 @@ item:
   enabled: false
   #权限组名 : 最大随机物品掉落数
   perm:
-    default: 3
-    vip: 2
+    pdp.default: 3
   message: "&7本次死亡掉落&c%num%&7格物品"
   didntDeath: 1
   worlds:
@@ -45,8 +45,7 @@ exp:
   enabled: false
   #权限组名 : 百分比
   perm:
-    default: 3
-    vip: 2
+    pdp.default: 3
   #使用经验值，不使用则用经验等级
   usepoints: false
   #剩几级或者几点经验值不扣了
@@ -65,8 +64,7 @@ points:
   enabled: false
   #权限组名 : 百分比
   perm:
-    default: 3
-    vip: 2
+    pdp.default: 3
   didnt: 100.0
   didntDeath: 1
   message: "&7本次死亡扣除&c%percentage%%&7点券,金额&c%num%"

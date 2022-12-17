@@ -2,6 +2,7 @@ package me.mmmjjkx.playerdeathpenalty;
 
 import com.earth2me.essentials.api.NoLoanPermittedException;
 import com.earth2me.essentials.api.UserDoesNotExistException;
+import me.mmmjjkx.playerdeathpenalty.data.PermManager;
 import net.ess3.api.MaxMoneyException;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,7 +103,7 @@ public class Listen implements Listener {
                         return;
                     }
                     BigDecimal b1 = new BigDecimal(point);
-                    BigDecimal b2 = new BigDecimal(chance);
+                    BigDecimal b2 = new BigDecimal(chance).multiply(BigDecimal.valueOf(0.01));
                     BigDecimal b3 = b1.multiply(b2).setScale(0, RoundingMode.HALF_UP);
                     BigDecimal b4 = b1.subtract(b3);
                     p.setExp(Float.parseFloat(b4.toPlainString()));
@@ -145,7 +146,7 @@ public class Listen implements Listener {
                     if (point <= PlayerDeathPenalty.config.getDouble("points.didnt")) {
                         return;
                     }
-                    BigDecimal chance = new BigDecimal(PermManager.getMoneyGroup(p));
+                    BigDecimal chance = new BigDecimal(PermManager.getPointsGroup(p));
                     BigDecimal chance2 = chance.multiply(new BigDecimal("0.01"));
                     BigDecimal money2 = new BigDecimal(point);
                     BigDecimal tak = chance2.multiply(money2).setScale(0,RoundingMode.HALF_UP);
