@@ -93,7 +93,7 @@ public final class PlayerDeathPenalty extends JavaPlugin {
     }
     public static List<Integer> getSlots(int size){
         if(size>=35){
-            size = 30;
+            size = 34;
         }
         List<Integer> l = new LinkedList<>();
         for(int i=0;i<size;i++){
