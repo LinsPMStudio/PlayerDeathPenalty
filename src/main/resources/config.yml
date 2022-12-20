@@ -1,5 +1,3 @@
-#收集数据
-bstats: true
 #金币惩罚
 money:
   #是否开启
@@ -74,4 +72,6 @@ points:
     - ""
   sounds:
     - ""
-
+#消息配置
+message:
+  reloadSuccess: "&a&l已重载配置！"

@@ -1,8 +1,11 @@
 package me.mmmjjkx.playerdeathpenalty;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,9 +40,7 @@ public class ThingsRunner {
                         case "asConsole":
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), runCommand);
                             break;
-                    }
-                }
-            }
+                    }}}
         }.run();
     }
     public static void playSound(String key,Player p) {
@@ -61,13 +62,35 @@ public class ThingsRunner {
             }
         }.run();
     }
+    public static void sendMessage(Player p,String legacy){
+       sendMessage((CommandSender) p, legacy);
+    }
     public static String colorizeString(String string) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        for (Matcher matcher = pattern.matcher(string); matcher.find(); matcher = pattern.matcher(string)) {
-            String color = string.substring(matcher.start(), matcher.end());
-            string = string.replace(color, net.md_5.bungee.api.ChatColor.of(color) + ""); // You're missing this replacing
+        if (classExists("net.md_5.bungee.api.ChatColor")) {
+            Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+            for (Matcher matcher = pattern.matcher(string); matcher.find(); matcher = pattern.matcher(string)) {
+                String color = string.substring(matcher.start(), matcher.end());
+                string = string.replace(color, net.md_5.bungee.api.ChatColor.of(color) + ""); // You're missing this replacing
+            }
         }
         string = ChatColor.translateAlternateColorCodes('&', string); // Translates any & codes too
         return string;
+    }
+
+    public static boolean classExists(String className) {
+        try {Class.forName(className);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void sendMessage(CommandSender sender, String legacy) {
+        if (classExists("net.kyori.adventure.text.Component")){
+            Component c = LegacyComponentSerializer.legacyAmpersand().deserializeOr(legacy,Component.newline());
+            sender.sendMessage(c);
+        }else {
+            sender.sendMessage(colorizeString(legacy));
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +18,14 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class Listen implements Listener {
+    private final FileConfiguration cfg = PlayerDeathPenalty.config;
+
     @EventHandler
     private void Money(PlayerDeathEvent e) throws MaxMoneyException, UserDoesNotExistException, NoLoanPermittedException {
         if (PlayerDeathPenalty.config.getBoolean("money.enabled")) {
@@ -45,8 +50,8 @@ public class Listen implements Listener {
                     double take = Double.parseDouble(tak.toPlainString());
                     PermManager.TakeMoney(p, take);
                     ThingsRunner.playSound("money",p);
-                    p.sendMessage(ThingsRunner.colorizeString(PlayerDeathPenalty.config.getString("money.message"))
-                            .replaceAll("%percentage%", String.valueOf(chance.intValue())).replaceAll("%num%", String.valueOf(take)));
+                    ThingsRunner.sendMessage(p, cfg.getString("money.message", "").replaceAll("%percentage%",
+                            String.valueOf(chance.intValue())).replaceAll("%num%", String.valueOf(take)));
                     ThingsRunner.runCommand("money",p);
                 }
             }
@@ -64,7 +69,7 @@ public class Listen implements Listener {
             Player p = e.getEntity();
             World w = p.getLocation().getWorld();
             if(PlayerDeathPenalty.config.getStringList("item.worlds").contains(w.getName())) {
-                List<Integer> slots = PlayerDeathPenalty.getSlots(PermManager.getItemGroup(p));
+                List<Integer> slots = getSlots(PermManager.getItemGroup(p));
                 Location loc = p.getLocation();
                 PlayerInventory pl = p.getInventory();
                 int s = slots.size();
@@ -78,7 +83,7 @@ public class Listen implements Listener {
                     w.dropItem(loc, is);
                 }
                 ThingsRunner.playSound("item",p);
-                p.sendMessage(ThingsRunner.colorizeString(PlayerDeathPenalty.config.getString("item.message"))
+                ThingsRunner.sendMessage(p, cfg.getString("item.message", "")
                                 .replaceAll("%num%", String.valueOf(s)));
                 ThingsRunner.runCommand("item",p);
             }
@@ -108,7 +113,7 @@ public class Listen implements Listener {
                     BigDecimal b4 = b1.subtract(b3);
                     p.setExp(Float.parseFloat(b4.toPlainString()));
                     ThingsRunner.playSound("exp",p);
-                    p.sendMessage(ThingsRunner.colorizeString(PlayerDeathPenalty.config.getString("exp.message2"))
+                    ThingsRunner.sendMessage(p, cfg.getString("exp.message2", "")
                             .replaceAll("%num%", b4.toPlainString()));
                     ThingsRunner.runCommand("exp",p);
                 } else {
@@ -122,7 +127,7 @@ public class Listen implements Listener {
                     BigDecimal b4 = b1.subtract(b3);
                     p.setLevel(Integer.parseInt(b4.toPlainString()));
                     ThingsRunner.playSound("exp",p);
-                    p.sendMessage(ThingsRunner.colorizeString(PlayerDeathPenalty.config.getString("exp.message"))
+                    ThingsRunner.sendMessage(p, cfg.getString("exp.message", "")
                             .replaceAll("%num%", b4.toPlainString()));
                     ThingsRunner.runCommand("exp",p);
                 }
@@ -152,11 +157,21 @@ public class Listen implements Listener {
                     BigDecimal tak = chance2.multiply(money2).setScale(0,RoundingMode.HALF_UP);
                     PlayerDeathPenalty.PlayerPointsAPI.take(p.getUniqueId(), Integer.parseInt(tak.toPlainString()));
                     ThingsRunner.playSound("points",p);
-                    p.sendMessage(ThingsRunner.colorizeString(PlayerDeathPenalty.config.getString("points.message"))
-                            .replaceAll("%percentage%", String.valueOf(chance.intValue())).replaceAll("%num%", tak.toPlainString()));
+                    ThingsRunner.sendMessage(p, cfg.getString("points.message", "").replaceAll("%percentage%", String.valueOf(chance.intValue()))
+                            .replaceAll("%num%", tak.toPlainString()));
                     ThingsRunner.runCommand("points",p);
                 }
             }
         }
+    }
+    public static List<Integer> getSlots(int size){
+        if(size>=35){
+            size = 34;
+        }
+        List<Integer> l = new LinkedList<>();
+        for(int i=0;i<size;i++){
+            l.add(i,new Random().nextInt(35));
+        }
+        return l;
     }
 }
